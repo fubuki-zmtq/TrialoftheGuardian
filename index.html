@@ -4,11 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>護王の試練 — ZETA MYTH TREE QUEST</title>
-  <!-- Google Fonts: Hina Mincho & Shippori Mincho -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Hina+Mincho&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root {
@@ -61,7 +59,6 @@
       background: radial-gradient(circle at 50% 25%, #111c3a 0%, #070c1c 65%, #03060f 100%);
     }
 
-    /* アンティークゴールド枠 */
     .gold-frame {
       background: var(--bg-panel);
       border: 1px solid var(--gold);
@@ -84,7 +81,6 @@
       position: relative;
     }
 
-    /* ボタンデザイン */
     .btn-antique {
       background: linear-gradient(180deg, #162344 0%, #0b1328 100%);
       border: 1px solid var(--gold);
@@ -128,7 +124,6 @@
       box-shadow: inset 0 0 14px rgba(197, 160, 89, 0.35);
     }
 
-    /* 順次フェードイン */
     @keyframes fadeUpIn {
       0% {
         opacity: 0;
@@ -151,7 +146,6 @@
     .stagger-5 { animation-delay: 0.41s; }
     .stagger-6 { animation-delay: 0.50s; }
 
-    /* ポップアップアニメーション */
     .modal-backdrop {
       opacity: 0;
       pointer-events: none;
@@ -174,7 +168,6 @@
       opacity: 1;
     }
 
-    /* カウントダウン演出 */
     @keyframes countPop {
       0% {
         opacity: 0;
@@ -197,7 +190,6 @@
       animation: countPop 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
 
-    /* 結界ゲージ輝き */
     .barrier-bar-shine {
       background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.28) 50%, rgba(255,255,255,0) 100%);
       background-size: 200% 100%;
@@ -208,7 +200,6 @@
       100% { background-position: 200% 0; }
     }
 
-    /* スクロールバー */
     ::-webkit-scrollbar {
       width: 6px;
     }
@@ -224,25 +215,21 @@
 
   <div id="appRoot" class="relative w-full h-full flex flex-col items-center justify-between overflow-hidden">
 
-    <!-- 上部ヘッダー / 戦闘中HUD -->
-    <header class="w-full max-w-[1200px] px-3 sm:px-6 pt-2.5 sm:pt-3.5 z-20 shrink-0">
-      <!-- タイトル画面用トップバー（操作方法・更新情報のみ） -->
+    <header class="w-full max-w-[1280px] px-3 sm:px-6 pt-2 sm:pt-3 z-20 shrink-0">
       <div id="titleTopBar" class="flex items-center justify-between gap-2 stagger-item stagger-1">
-        <button id="btnOpenControls" class="btn-antique px-3.5 sm:px-5 py-1.5 sm:py-2 text-xs sm:text-sm tracking-widest flex items-center gap-2">
+        <button id="btnOpenControls" class="btn-antique px-3.5 sm:px-5 py-1.5 text-xs sm:text-sm tracking-widest flex items-center gap-2">
           <span class="inline-block w-2 h-2 border border-[#c5a059] rotate-45 bg-[#c5a059]/40"></span>
           <span>操作方法</span>
         </button>
 
-        <button id="btnOpenUpdates" class="btn-antique px-3.5 sm:px-5 py-1.5 sm:py-2 text-xs sm:text-sm tracking-widest flex items-center gap-2">
+        <button id="btnOpenUpdates" class="btn-antique px-3.5 sm:px-5 py-1.5 text-xs sm:text-sm tracking-widest flex items-center gap-2">
           <span class="inline-block w-2 h-2 border border-[#c5a059] rotate-45"></span>
           <span>更新情報</span>
         </button>
       </div>
 
-      <!-- 戦闘中HUD -->
       <div id="battleHud" class="hidden w-full flex-col gap-1.5">
         <div class="flex flex-wrap items-center justify-between gap-2 bg-[#070d1f]/90 border border-[#c5a059]/60 px-3 py-1.5">
-          <!-- 左：ボス名・現在のモード・段階 -->
           <div class="flex items-center gap-2 sm:gap-3">
             <div class="flex items-center gap-1.5">
               <span class="inline-block w-2.5 h-2.5 bg-[#c5a059] rotate-45"></span>
@@ -256,27 +243,22 @@
             </span>
           </div>
 
-          <!-- 右：障壁・経過時間・被弾数・再挑戦 -->
           <div class="flex items-center gap-3 sm:gap-5 ml-auto">
-            <!-- プレイヤー障壁 -->
             <div id="hpBox" class="flex items-center gap-1.5">
               <span class="text-[11px] text-[#c2bca8] tracking-wider">障壁</span>
               <div id="hpPips" class="flex items-center gap-1"></div>
             </div>
 
-            <!-- 経過時間 -->
             <div class="flex items-baseline gap-1.5 border-l border-[#c5a059]/30 pl-2.5 sm:pl-3">
               <span class="text-[10px] text-[#c2bca8] tracking-widest">TIME</span>
               <span id="hudTime" class="font-mono-num text-sm sm:text-base font-bold text-[#f4efe6]">00:00.00</span>
             </div>
 
-            <!-- 被弾数 -->
             <div class="flex items-baseline gap-1.5 border-l border-[#c5a059]/30 pl-2.5 sm:pl-3">
               <span class="text-[10px] text-[#c2bca8] tracking-widest">被弾</span>
               <span id="hudHits" class="font-mono-num text-sm sm:text-base font-bold text-[#e4c580]">0</span>
             </div>
 
-            <!-- 再挑戦・タイトルへ -->
             <div class="flex items-center gap-1.5 border-l border-[#c5a059]/30 pl-2">
               <button id="btnQuickRetry" class="btn-antique px-2.5 py-1 text-[11px] tracking-wider text-[#e4c580]" title="最初からやり直す (Rキー)">
                 再挑戦
@@ -288,7 +270,6 @@
           </div>
         </div>
 
-        <!-- 結界耐久ゲージ -->
         <div class="w-full bg-[#040814] border border-[#c5a059]/70 h-5 sm:h-6 p-0.5 relative">
           <div id="barrierBarFill" class="h-full w-full transition-all duration-75 relative" style="background: linear-gradient(90deg, #1f4670 0%, #4b82b8 55%, #c5a059 100%);">
             <div class="barrier-bar-shine absolute inset-0"></div>
@@ -301,12 +282,10 @@
       </div>
     </header>
 
-    <!-- 中央：ゲームCanvasコンテナ -->
-    <main class="relative flex-1 w-full max-w-[1200px] flex items-center justify-center px-2 sm:px-6 py-1.5 min-h-0">
+    <main class="relative flex-1 w-full max-w-[1280px] flex items-center justify-center px-2 sm:px-6 py-1 min-h-0">
       <div id="canvasFrame" class="relative w-full h-full flex items-center justify-center">
         <canvas id="gameCanvas" class="gold-frame shadow-2xl block"></canvas>
 
-        <!-- カウントダウンオーバーレイ -->
         <div id="countdownOverlay" class="hidden pointer-events-none absolute inset-0 z-30 flex items-center justify-center bg-[#040814]/55 backdrop-blur-[2px]">
           <div class="text-center">
             <p id="countdownModeLabel" class="text-xs sm:text-sm tracking-[0.3em] text-[#c5a059] mb-2">通常訓練</p>
@@ -316,37 +295,32 @@
           </div>
         </div>
 
-        <!-- ==================== 1. タイトル画面オーバーレイ ==================== -->
-        <div id="titleOverlay" class="absolute inset-0 z-20 flex flex-col items-center justify-center p-2 sm:p-5 bg-[#040814]/80 backdrop-blur-[3px]">
-          <div class="gold-frame-double w-full max-w-[960px] px-4 py-4 sm:px-8 sm:py-6 flex flex-col justify-between max-h-full overflow-y-auto">
+        <div id="titleOverlay" class="absolute inset-0 z-20 flex flex-col items-center justify-center p-2 sm:px-8 sm:py-3 bg-[#040814]/78 backdrop-blur-[3px]">
+          <div class="w-full max-w-[1140px] h-full max-h-[600px] flex flex-col justify-evenly">
             
-            <!-- タイトル見出し -->
             <div class="text-center stagger-item stagger-2">
-              <h1 class="font-hina text-4xl sm:text-6xl tracking-[0.18em] text-[#f4efe6] drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)]">
+              <h1 class="font-hina text-4xl sm:text-5xl lg:text-6xl tracking-[0.18em] text-[#f4efe6] drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)]">
                 護王の試練
               </h1>
-              <div class="flex items-center justify-center gap-3 mt-1 sm:mt-2">
+              <div class="flex items-center justify-center gap-3 mt-1">
                 <span class="h-[1px] w-8 sm:w-16 bg-[#c5a059]/60"></span>
-                <p class="text-[11px] sm:text-xs tracking-[0.32em] text-[#c5a059] font-semibold">
+                <p class="text-[10px] sm:text-xs tracking-[0.32em] text-[#c5a059] font-semibold">
                   TRIAL OF THE GUARDIAN
                 </p>
                 <span class="h-[1px] w-8 sm:w-16 bg-[#c5a059]/60"></span>
               </div>
             </div>
 
-            <!-- 中央：導入文 ＆ 自己ベスト記録 -->
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-5 my-3 sm:my-5 items-stretch">
-              <!-- 導入ストーリー文 -->
-              <div class="md:col-span-7 gold-subpanel p-3.5 sm:p-5 flex flex-col justify-center stagger-item stagger-3">
-                <p class="font-shippori text-xs sm:text-base leading-relaxed sm:leading-loose text-[#f4efe6] tracking-wide">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-2.5 sm:gap-5 items-stretch">
+              <div class="md:col-span-7 gold-subpanel px-4 py-3 sm:px-6 sm:py-4 flex flex-col justify-center stagger-item stagger-3">
+                <p class="font-shippori text-xs sm:text-sm lg:text-base leading-relaxed sm:leading-loose text-[#f4efe6] tracking-wide">
                   舞台は王都バネッサ。<br />
                   もふもふペンギンの王様・<span class="text-[#e4c580] font-bold">壱ノ護王</span>が、あなたの訓練に付き合ってくれることになりました。<br />
                   雷と光の攻撃を回避し、魔法弾を撃ち込んで<span class="text-[#e4c580] font-bold">護王を守る結界</span>を破りましょう！
                 </p>
               </div>
 
-              <!-- 自己ベスト記録（選択中モードの記録を表示） -->
-              <div class="md:col-span-5 gold-subpanel p-3 sm:p-4 flex flex-col justify-between stagger-item stagger-4">
+              <div class="md:col-span-5 gold-subpanel px-3.5 py-2.5 sm:px-5 sm:py-3.5 flex flex-col justify-between stagger-item stagger-4">
                 <div class="flex items-center justify-between border-b border-[#c5a059]/30 pb-1.5 mb-2">
                   <div class="flex items-center gap-2">
                     <span class="inline-block w-2 h-2 bg-[#c5a059] rotate-45"></span>
@@ -358,29 +332,28 @@
                     記録消去
                   </button>
                 </div>
-                <div class="grid grid-cols-4 md:grid-cols-2 gap-1.5 sm:gap-2 text-center">
-                  <div class="bg-[#040814]/80 border border-[#c5a059]/25 p-1.5 sm:p-2">
-                    <div class="text-[10px] sm:text-xs text-[#c2bca8]">最高ランク</div>
-                    <div id="bestRankText" class="text-base sm:text-xl font-bold text-[#e4c580] mt-0.5">—</div>
+                <div class="grid grid-cols-4 gap-1.5 sm:gap-2 text-center my-auto">
+                  <div class="bg-[#040814]/80 border border-[#c5a059]/25 py-2 px-1">
+                    <div class="text-[10px] text-[#c2bca8]">最高ランク</div>
+                    <div id="bestRankText" class="text-sm sm:text-lg font-bold text-[#e4c580] mt-0.5">—</div>
                   </div>
-                  <div class="bg-[#040814]/80 border border-[#c5a059]/25 p-1.5 sm:p-2">
-                    <div class="text-[10px] sm:text-xs text-[#c2bca8]">最速タイム</div>
-                    <div id="bestTimeText" class="font-mono-num text-xs sm:text-base font-bold text-[#f4efe6] mt-0.5">--:--.--</div>
+                  <div class="bg-[#040814]/80 border border-[#c5a059]/25 py-2 px-1">
+                    <div class="text-[10px] text-[#c2bca8]">最速タイム</div>
+                    <div id="bestTimeText" class="font-mono-num text-xs sm:text-sm font-bold text-[#f4efe6] mt-1">--:--.--</div>
                   </div>
-                  <div class="bg-[#040814]/80 border border-[#c5a059]/25 p-1.5 sm:p-2">
-                    <div class="text-[10px] sm:text-xs text-[#c2bca8]">最少被弾</div>
-                    <div id="bestHitsText" class="font-mono-num text-xs sm:text-base font-bold text-[#f4efe6] mt-0.5">—</div>
+                  <div class="bg-[#040814]/80 border border-[#c5a059]/25 py-2 px-1">
+                    <div class="text-[10px] text-[#c2bca8]">最少被弾</div>
+                    <div id="bestHitsText" class="font-mono-num text-xs sm:text-sm font-bold text-[#f4efe6] mt-1">—</div>
                   </div>
-                  <div class="bg-[#040814]/80 border border-[#c5a059]/25 p-1.5 sm:p-2">
-                    <div class="text-[10px] sm:text-xs text-[#c2bca8]">最高スコア</div>
-                    <div id="bestScoreText" class="font-mono-num text-xs sm:text-base font-bold text-[#e4c580] mt-0.5">0</div>
+                  <div class="bg-[#040814]/80 border border-[#c5a059]/25 py-2 px-1">
+                    <div class="text-[10px] text-[#c2bca8]">最高スコア</div>
+                    <div id="bestScoreText" class="font-mono-num text-xs sm:text-sm font-bold text-[#e4c580] mt-1">0</div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- 4段階のモード選択 ＆ 試練開始ボタン -->
-            <div class="flex flex-col gap-3 pt-2 border-t border-[#c5a059]/30 stagger-item stagger-5">
+            <div class="gold-subpanel p-2.5 sm:p-4 flex flex-col gap-2.5 stagger-item stagger-5">
               <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 <button data-mode="WARMUP" class="mode-btn btn-antique py-2 px-2 text-xs sm:text-sm font-bold tracking-wider text-center">
                   準備運動
@@ -397,11 +370,11 @@
               </div>
 
               <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 sm:gap-4">
-                <div id="modeDescText" class="text-xs sm:text-sm text-[#e4c580] bg-[#040814]/70 border border-[#c5a059]/30 px-3 py-2 flex-1">
-                  【通常訓練】障壁：5回 ／ 結界耐久：1,200 ／ 標準的な試練（クリアボーナス 5,000）
+                <div id="modeDescText" class="text-xs sm:text-sm text-[#e4c580] bg-[#040814]/80 border border-[#c5a059]/30 px-3.5 py-2 flex items-center flex-1">
+                  【通常訓練】障壁：5枚 ／ 耐久：1,200 ／ 標準的な試練
                 </div>
 
-                <button id="btnStartGame" class="btn-gold-primary py-2.5 sm:py-3 px-8 sm:px-10 text-sm sm:text-base font-bold tracking-[0.2em] flex items-center justify-center gap-3 shrink-0">
+                <button id="btnStartGame" class="btn-gold-primary py-2.5 sm:py-3 px-8 sm:px-12 text-sm sm:text-base font-bold tracking-[0.2em] flex items-center justify-center gap-3 shrink-0">
                   <span class="inline-block w-2.5 h-2.5 bg-[#e4c580] rotate-45"></span>
                   <span>試練を開始する</span>
                   <span class="inline-block w-2.5 h-2.5 bg-[#e4c580] rotate-45"></span>
@@ -412,11 +385,9 @@
           </div>
         </div>
 
-        <!-- ==================== 2. リザルト画面オーバーレイ ==================== -->
-        <div id="resultOverlay" class="hidden absolute inset-0 z-20 flex flex-col items-center justify-center p-2 sm:p-5 bg-[#040814]/88 backdrop-blur-md">
-          <div class="gold-frame-double w-full max-w-[980px] px-4 py-4 sm:px-8 sm:py-6 flex flex-col justify-between max-h-full overflow-y-auto">
+        <div id="resultOverlay" class="hidden absolute inset-0 z-20 flex flex-col items-center justify-center p-2 sm:px-8 sm:py-4 bg-[#040814]/88 backdrop-blur-md">
+          <div class="gold-frame-double w-full max-w-[1060px] px-4 py-4 sm:px-8 sm:py-6 flex flex-col justify-between max-h-full overflow-y-auto">
             
-            <!-- 上部：結果見出し -->
             <div class="flex flex-wrap items-center justify-between gap-2 border-b border-[#c5a059]/40 pb-2.5">
               <div class="flex items-center gap-3">
                 <span class="inline-block w-3 h-3 bg-[#c5a059] rotate-45"></span>
@@ -432,19 +403,15 @@
               </div>
             </div>
 
-            <!-- 中央：ランク・スコア詳細・壱ノ護王のセリフ -->
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-5 my-3 sm:my-5 items-stretch">
-              
-              <!-- 左：評価ランク -->
-              <div class="md:col-span-3 gold-subpanel p-4 sm:p-5 flex flex-col items-center justify-center text-center">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-5 my-3 sm:my-4 items-stretch">
+              <div class="md:col-span-3 gold-subpanel p-3 sm:p-5 flex flex-col items-center justify-center text-center">
                 <span class="text-xs sm:text-sm tracking-widest text-[#c2bca8]">評価ランク</span>
                 <div id="resultRankChar" class="font-hina text-6xl sm:text-7xl font-bold text-[#e4c580] mt-2 drop-shadow-[0_0_20px_rgba(197,160,89,0.5)]">
                   S
                 </div>
               </div>
 
-              <!-- 中央：タイム・被弾・最終スコア・内訳 -->
-              <div class="md:col-span-5 gold-subpanel p-4 sm:p-5 flex flex-col justify-between">
+              <div class="md:col-span-5 gold-subpanel p-3.5 sm:p-5 flex flex-col justify-between">
                 <div class="grid grid-cols-3 gap-2 border-b border-[#c5a059]/30 pb-3">
                   <div>
                     <div class="text-xs text-[#c2bca8]">クリアタイム</div>
@@ -476,8 +443,7 @@
                 </div>
               </div>
 
-              <!-- 右：壱ノ護王のセリフ -->
-              <div class="md:col-span-4 gold-subpanel p-4 sm:p-5 flex flex-col justify-center">
+              <div class="md:col-span-4 gold-subpanel p-3.5 sm:p-5 flex flex-col justify-center">
                 <div class="flex items-center gap-2 border-b border-[#c5a059]/30 pb-2 mb-2">
                   <span class="inline-block w-2 h-2 bg-[#c5a059] rotate-45"></span>
                   <span class="text-xs sm:text-sm font-bold tracking-widest text-[#e4c580]">壱ノ護王</span>
@@ -486,10 +452,8 @@
                   「お見事です！電光石火の身のこなしと魔力制御、立派になりましたね。」
                 </p>
               </div>
-
             </div>
 
-            <!-- 下部：タイトルへ戻る / もう一度挑戦する / Xでシェア -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-4 pt-2 border-t border-[#c5a059]/30">
               <button id="btnBackToTitle" class="btn-antique py-2.5 px-4 text-xs sm:text-sm font-semibold tracking-widest text-center">
                 タイトルへ戻る
@@ -510,8 +474,7 @@
       </div>
     </main>
 
-    <!-- 下部フッター（左下：原作リンク / モバイル戦闘時：操作パネル） -->
-    <footer class="w-full max-w-[1200px] px-3 sm:px-6 pb-2.5 sm:pb-3.5 z-20 shrink-0">
+    <footer class="w-full max-w-[1280px] px-3 sm:px-6 pb-2 sm:pb-3 z-20 shrink-0">
       <div id="footerLinkBar" class="flex items-center justify-between stagger-item stagger-6">
         <a href="https://www.alphapolis.co.jp/novel/370742809/912041416"
            target="_blank"
@@ -527,13 +490,11 @@
         </a>
 
         <div class="hidden sm:block text-[11px] text-[#7e796a] tracking-widest">
-          VER 1.1.0
+          VER 1.1.1
         </div>
       </div>
 
-      <!-- スマートフォン・タブレット用 仮想コントローラー（タッチ端末での戦闘時に自動表示） -->
       <div id="touchControlsBar" class="hidden w-full items-center justify-between px-2 sm:px-6 py-1 select-none">
-        <!-- 左下：仮想スティック -->
         <div class="flex items-center gap-3">
           <div id="joystickZone" class="relative w-28 h-28 sm:w-32 sm:h-32 bg-[#070d1f]/90 border-2 border-[#c5a059]/70 flex items-center justify-center touch-none shadow-lg">
             <div class="absolute inset-3 border border-[#c5a059]/25 pointer-events-none"></div>
@@ -549,7 +510,6 @@
           </div>
         </div>
 
-        <!-- 右下：魔法攻撃ボタン -->
         <div class="flex items-center gap-3">
           <button id="attackTouchBtn" class="w-24 h-24 sm:w-28 sm:h-28 bg-[#2d2210] active:bg-[#463519] border-2 border-[#e4c580] shadow-xl flex flex-col items-center justify-center touch-none select-none">
             <span class="w-4 h-4 border-2 border-[#e4c580] rotate-45 mb-1 bg-[#e4c580]/30"></span>
@@ -560,10 +520,8 @@
       </div>
     </footer>
 
-    <!-- ==================== ポップアップ1：操作方法モーダル（ヘッダー固定＋内部スクロール対応） ==================== -->
     <div id="modalControls" class="modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6">
       <div class="modal-content-box gold-frame-double w-full max-w-[680px] max-h-[82vh] flex flex-col overflow-hidden">
-        <!-- 固定ヘッダー -->
         <div class="flex items-center justify-between border-b border-[#c5a059]/40 px-4 py-3 sm:px-6 sm:py-4 shrink-0 bg-[#080e20]">
           <div class="flex items-center gap-2.5">
             <span class="inline-block w-2.5 h-2.5 bg-[#c5a059] rotate-45"></span>
@@ -574,7 +532,6 @@
           </button>
         </div>
 
-        <!-- スクロール可能な本文領域 -->
         <div class="p-4 sm:p-6 overflow-y-auto space-y-4 text-xs sm:text-sm text-[#f4efe6]">
           <div class="gold-subpanel p-4">
             <div class="flex items-center gap-2 text-[#e4c580] font-bold tracking-wider mb-2">
@@ -605,11 +562,11 @@
             <ul class="space-y-2 text-[#c2bca8]">
               <li class="flex justify-between border-b border-[#c5a059]/15 pb-1">
                 <span>移動</span>
-                <span class="text-[#f4efe6] font-semibold">左下スティック または 画面スライド</span>
+                <span class="text-[#f4efe6] font-semibold">画面スライド または 左下スティック</span>
               </li>
               <li class="flex justify-between">
                 <span>魔法攻撃</span>
-                <span class="text-[#f4efe6] font-semibold">右下「魔弾」ボタン長押し（または画面タッチ中自動連射）</span>
+                <span class="text-[#f4efe6] font-semibold">画面タッチ中自動連射 / 右下「魔弾」ボタン</span>
               </li>
             </ul>
           </div>
@@ -617,21 +574,18 @@
           <div class="gold-subpanel p-4">
             <div class="flex items-center gap-2 text-[#e4c580] font-bold tracking-wider mb-1.5">
               <span class="inline-block w-2 h-2 bg-[#e4c580] rotate-45"></span>
-              <span>ルールと難易度について</span>
+              <span>ルール</span>
             </div>
             <p class="text-[#c2bca8] leading-relaxed">
-              壱ノ護王の雷と光の攻撃には事前に予兆が表示されます。予兆を避けながら魔法弾を当て、結界の耐久値をゼロにすればクリアです。<br />
-              「準備運動」「通常訓練」「猛特訓」「特別指導」の4つのモードから選んで挑戦できます。
+              壱ノ護王の雷と光の攻撃には事前に予兆が表示されます。予兆を避けながら魔法弾を当て、結界の耐久値をゼロにすればクリアです。
             </p>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ==================== ポップアップ2：更新情報モーダル（ヘッダー固定＋内部スクロール対応） ==================== -->
     <div id="modalUpdates" class="modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6">
       <div class="modal-content-box gold-frame-double w-full max-w-[680px] max-h-[82vh] flex flex-col overflow-hidden">
-        <!-- 固定ヘッダー -->
         <div class="flex items-center justify-between border-b border-[#c5a059]/40 px-4 py-3 sm:px-6 sm:py-4 shrink-0 bg-[#080e20]">
           <div class="flex items-center gap-2.5">
             <span class="inline-block w-2.5 h-2.5 bg-[#c5a059] rotate-45"></span>
@@ -642,52 +596,57 @@
           </button>
         </div>
 
-        <!-- スクロール可能な本文領域 -->
         <div class="p-4 sm:p-6 overflow-y-auto space-y-3.5 text-xs sm:text-sm">
-          <!-- Ver 1.1.0 -->
           <div class="gold-subpanel p-4">
             <div class="flex items-center justify-between border-b border-[#c5a059]/30 pb-1.5 mb-2">
-              <span class="font-bold text-[#e4c580] tracking-wider">Ver 1.1.0</span>
-              <span class="font-mono-num text-xs text-[#c2bca8]">2025.05.22</span>
+              <span class="font-bold text-[#e4c580] tracking-wider">Ver 1.1.1</span>
+              <span class="font-mono-num text-xs text-[#c2bca8]">2026.10.26</span>
             </div>
-            <ul class="space-y-1.5 text-[#f4efe6] leading-relaxed list-disc list-inside">
-              <li>4つの訓練モード（「準備運動」「通常訓練」「猛特訓」「特別指導」）と高難易度用の攻撃パターンを追加しました。</li>
-              <li>リザルト画面に「Xでシェア」ボタンを追加しました。</li>
-              <li>UIの不要な装飾や中央バナー・音響を整理し、ポップアップ内のスクロールとスマホでのタッチ移動操作性を改善しました。</li>
+            <ul class="space-y-1 text-[#f4efe6] leading-relaxed list-disc list-inside">
+              <li>ホーム画面のレイアウトとテキスト表示を調整</li>
             </ul>
           </div>
 
-          <!-- Ver 1.0.2 -->
+          <div class="gold-subpanel p-4">
+            <div class="flex items-center justify-between border-b border-[#c5a059]/30 pb-1.5 mb-2">
+              <span class="font-bold text-[#f4efe6] tracking-wider">Ver 1.1.0</span>
+              <span class="font-mono-num text-xs text-[#c2bca8]">2026.10.26</span>
+            </div>
+            <ul class="space-y-1 text-[#c2bca8] leading-relaxed list-disc list-inside">
+              <li>4つの訓練モードと高難易度攻撃パターンを追加</li>
+              <li>リザルト画面にXシェア機能を追加</li>
+              <li>スマホ操作性とUI表示を改善</li>
+            </ul>
+          </div>
+
           <div class="gold-subpanel p-4">
             <div class="flex items-center justify-between border-b border-[#c5a059]/30 pb-1.5 mb-2">
               <span class="font-bold text-[#f4efe6] tracking-wider">Ver 1.0.2</span>
-              <span class="font-mono-num text-xs text-[#c2bca8]">2025.05.21</span>
+              <span class="font-mono-num text-xs text-[#c2bca8]">2026.10.26</span>
             </div>
             <ul class="space-y-1 text-[#c2bca8] leading-relaxed list-disc list-inside">
-              <li>ポップアップの閉じるボタンを右上の「× CLOSE」に統一し、表示レイアウトを調整しました。</li>
+              <li>ポップアップ画面のボタンと表示を調整</li>
             </ul>
           </div>
 
-          <!-- Ver 1.0.1 -->
           <div class="gold-subpanel p-4">
             <div class="flex items-center justify-between border-b border-[#c5a059]/30 pb-1.5 mb-2">
               <span class="font-bold text-[#f4efe6] tracking-wider">Ver 1.0.1</span>
-              <span class="font-mono-num text-xs text-[#c2bca8]">2025.05.20</span>
+              <span class="font-mono-num text-xs text-[#c2bca8]">2026.10.26</span>
             </div>
             <ul class="space-y-1 text-[#c2bca8] leading-relaxed list-disc list-inside">
-              <li>フォント（Hina Mincho / Shippori Mincho）およびネイビー・アイボリー・アンティークゴールド配色へ変更しました。</li>
-              <li>壱ノ護王のビジュアルと丁寧語のセリフ、開始前カウントダウン、ポップアップ画面を追加しました。</li>
+              <li>全体のデザイン・配色・フォントを刷新</li>
+              <li>カウントダウン演出と各種ポップアップを追加</li>
             </ul>
           </div>
 
-          <!-- Ver 1.0.0 -->
           <div class="gold-subpanel p-4">
             <div class="flex items-center justify-between border-b border-[#c5a059]/30 pb-1.5 mb-2">
               <span class="font-bold text-[#f4efe6] tracking-wider">Ver 1.0.0</span>
-              <span class="font-mono-num text-xs text-[#c2bca8]">2025.05.19</span>
+              <span class="font-mono-num text-xs text-[#c2bca8]">2026.10.26</span>
             </div>
             <ul class="space-y-1 text-[#c2bca8] leading-relaxed list-disc list-inside">
-              <li>『護王の試練』初期開発版を公開しました。</li>
+              <li>『護王の試練』初期版を公開</li>
             </ul>
           </div>
         </div>
@@ -696,14 +655,10 @@
 
   </div>
 
-  <!-- ゲームスクリプト -->
   <script>
     (() => {
       'use strict';
 
-      // ==========================================
-      // 1. 4段階の訓練モード定義
-      // ==========================================
       const MODES = {
         WARMUP: {
           key: 'WARMUP',
@@ -713,7 +668,7 @@
           baseBonus: 3000,
           parTime: 95,
           speedScale: 0.9,
-          desc: '【準備運動】障壁：無制限 ／ 結界耐久：1,200 ／ まずは攻撃を見極める練習モード（クリアボーナス 3,000）'
+          desc: '【準備運動】障壁：無制限 ／ 耐久：1,200 ／ まずは攻撃を見極める練習モード'
         },
         NORMAL: {
           key: 'NORMAL',
@@ -723,7 +678,7 @@
           baseBonus: 5000,
           parTime: 95,
           speedScale: 1.0,
-          desc: '【通常訓練】障壁：5回 ／ 結界耐久：1,200 ／ 標準的な試練（クリアボーナス 5,000）'
+          desc: '【通常訓練】障壁：5枚 ／ 耐久：1,200 ／ 標準的な試練'
         },
         INTENSE: {
           key: 'INTENSE',
@@ -733,7 +688,7 @@
           baseBonus: 8000,
           parTime: 140,
           speedScale: 1.18,
-          desc: '【猛特訓】障壁：3回 ／ 結界耐久：1,800 ／ 攻撃が激化する高難易度（クリアボーナス 8,000）'
+          desc: '【猛特訓】障壁：3枚 ／ 耐久：1,800 ／ 攻撃が激化する高難易度'
         },
         SPECIAL: {
           key: 'SPECIAL',
@@ -743,15 +698,12 @@
           baseBonus: 12000,
           parTime: 185,
           speedScale: 1.32,
-          desc: '【特別指導】障壁：1回（被弾即失敗） ／ 結界耐久：2,400 ／ 護王の本気に挑む最高難易度（クリアボーナス 12,000）'
+          desc: '【特別指導】障壁：1枚 ／ 耐久：2,400 ／ 護王の本気に挑む最高難易度'
         }
       };
 
       const STORAGE_KEY_V11 = 'zmtq_guardian_trial_best_v1_1';
 
-      // ==========================================
-      // 2. 内部座標系設定
-      // ==========================================
       let WORLD_W = 1120;
       let WORLD_H = 630;
       let STAGE_BOUNDS = { left: 100, right: 1020, top: 225, bottom: 585 };
@@ -775,9 +727,6 @@
         }
       }
 
-      // ==========================================
-      // 3. DOM要素の参照
-      // ==========================================
       const canvas = document.getElementById('gameCanvas');
       const ctx = canvas.getContext('2d');
       const canvasFrame = document.getElementById('canvasFrame');
@@ -809,7 +758,6 @@
       const bestScoreText = document.getElementById('bestScoreText');
       const modeDescText = document.getElementById('modeDescText');
 
-      // ポップアップ制御
       const modalControls = document.getElementById('modalControls');
       const modalUpdates = document.getElementById('modalUpdates');
 
@@ -831,10 +779,7 @@
         });
       });
 
-      // ==========================================
-      // 4. ゲーム状態変数
-      // ==========================================
-      let gameState = 'TITLE'; // 'TITLE' | 'COUNTDOWN' | 'PLAYING' | 'CLEAR_ANIM' | 'RESULT'
+      let gameState = 'TITLE';
       let currentModeKey = 'NORMAL';
       let isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
 
@@ -849,7 +794,6 @@
       let countdownTimer = 0;
       let lastCountdownStep = -1;
 
-      // 最新のリザルト保持（Xシェア用）
       let lastResultSummary = {
         modeName: '通常訓練',
         score: 0,
@@ -879,20 +823,15 @@
         patternIndex: 0
       };
 
-      // 入力状態
       const keys = {};
       let mouseAttackHeld = false;
       let touchAttackHeld = false;
       let joyVector = { x: 0, y: 0 };
       let joyTouchId = null;
 
-      // スマホ用：Canvas上の直接ドラッグ移動サポート（操作しやすさ向上）
       let canvasDragTouchId = null;
       let canvasDragLastPos = { x: 0, y: 0 };
 
-      // ==========================================
-      // 5. Canvasサイズ調整
-      // ==========================================
       function resizeCanvas() {
         const prevW = WORLD_W;
         const prevH = WORLD_H;
@@ -938,9 +877,6 @@
         requestAnimationFrame(resizeCanvas);
       }
 
-      // ==========================================
-      // 6. モード別・自己ベスト記録管理
-      // ==========================================
       function loadAllBestRecords() {
         try {
           const raw = localStorage.getItem(STORAGE_KEY_V11);
@@ -1016,9 +952,6 @@
         bestScoreText.textContent = rec.bestScore.toLocaleString();
       }
 
-      // ==========================================
-      // 7. HUD・カウントダウン・試練開始
-      // ==========================================
       function renderHpPips() {
         if (!Number.isFinite(player.maxHp)) {
           hpBox.classList.add('hidden');
@@ -1107,14 +1040,10 @@
         updateFooterControlsVisibility();
       }
 
-      // ==========================================
-      // 8. 壱ノ護王の攻撃パターン生成（難易度連動）
-      // ==========================================
       function getSpeedScale() {
         return MODES[currentModeKey].speedScale;
       }
 
-      // パターンA：雷の直線攻撃
       function spawnPatternA_LightningSpear(aimOffsetAngle = 0, customWarn = null) {
         const scale = getSpeedScale();
         const baseWarn = currentPhase === 1 ? 0.92 : currentPhase === 2 ? 0.78 : 0.68;
@@ -1141,7 +1070,6 @@
         });
       }
 
-      // パターンB：光の範囲攻撃
       function spawnPatternB_LightCircle(targetX, targetY, radius = 78, customWarn = null) {
         const scale = getSpeedScale();
         const baseWarn = currentPhase === 1 ? 1.15 : currentPhase === 2 ? 0.98 : 0.85;
@@ -1163,7 +1091,6 @@
         });
       }
 
-      // パターンC：連続攻撃
       function spawnPatternC_ComboBarrage() {
         const scale = getSpeedScale();
         const isHard = (currentModeKey === 'INTENSE' || currentModeKey === 'SPECIAL');
@@ -1189,7 +1116,6 @@
         }
       }
 
-      // パターンD：横方向への広範囲攻撃
       function spawnPatternD_HorizontalWave(customY = null) {
         const scale = getSpeedScale();
         const isHard = (currentModeKey === 'INTENSE' || currentModeKey === 'SPECIAL');
@@ -1225,7 +1151,6 @@
         });
       }
 
-      // 高難易度追加パターンE：交差する雷網（猛特訓・特別指導で登場）
       function spawnPatternE_CrossThunderGrid() {
         const angles = [-0.36, -0.18, 0, 0.18, 0.36];
         for (const ang of angles) {
@@ -1285,7 +1210,6 @@
             attackDirector.cooldown = 1.8 / scale;
           }
         } else {
-          // 最終段階（または高難易度後半）
           if (pat === 0) {
             spawnPatternC_ComboBarrage();
             spawnPatternD_HorizontalWave();
@@ -1321,9 +1245,6 @@
         }
       }
 
-      // ==========================================
-      // 9. エフェクト・被弾処理
-      // ==========================================
       function spawnParticles(x, y, count, color, speedMin = 40, speedMax = 210, size = 3.5, life = 0.5) {
         for (let i = 0; i < count; i++) {
           const ang = Math.random() * Math.PI * 2;
@@ -1398,9 +1319,6 @@
         }
       }
 
-      // ==========================================
-      // 10. クリア・スコア計算・Xシェア機能
-      // ==========================================
       function triggerBarrierBreakClear() {
         gameState = 'CLEAR_ANIM';
         clearAnimTimer = 0;
@@ -1436,7 +1354,6 @@
 
         const totalScore = Math.max(500, baseBonus + timeBonus + avoidBonus);
 
-        // モードのクリアボーナスに応じたS/A/B基準
         const sThreshold = baseBonus + 5200;
         const aThreshold = baseBonus + 3000;
         const bThreshold = baseBonus + 1000;
@@ -1519,7 +1436,6 @@
         resultOverlay.classList.remove('hidden');
       }
 
-      // Xでシェアボタン
       document.getElementById('btnShareX').addEventListener('click', () => {
         const postText =
 `壱ノ護王との${lastResultSummary.modeName}をクリアした！
@@ -1532,9 +1448,6 @@ https://fubuki-zmtq.github.io/TrialoftheGuardian/`;
         window.open(shareUrl, '_blank', 'noopener,noreferrer');
       });
 
-      // ==========================================
-      // 11. メイン更新処理
-      // ==========================================
       function updateGame(dt) {
         if (screenShake > 0) {
           screenShake = Math.max(0, screenShake - dt * 32);
@@ -1601,7 +1514,6 @@ https://fubuki-zmtq.github.io/TrialoftheGuardian/`;
         elapsedTime += dt;
         hudTime.textContent = formatTime(elapsedTime);
 
-        // プレイヤー移動
         let moveX = 0;
         let moveY = 0;
         if (keys['KeyW'] || keys['ArrowUp']) moveY -= 1;
@@ -1632,7 +1544,6 @@ https://fubuki-zmtq.github.io/TrialoftheGuardian/`;
           player.invulnTimer = Math.max(0, player.invulnTimer - dt);
         }
 
-        // プレイヤー魔弾発射（スマホでは画面直接ドラッグ中も自動連射して操作負担を軽減）
         player.shootCooldown = Math.max(0, player.shootCooldown - dt);
         const wantsAttack = keys['Space'] || mouseAttackHeld || touchAttackHeld || (canvasDragTouchId !== null);
         if (wantsAttack && player.shootCooldown <= 0) {
@@ -1655,7 +1566,6 @@ https://fubuki-zmtq.github.io/TrialoftheGuardian/`;
           spawnParticles(player.x, player.y - 12, 3, '#e4c580', 25, 80, 2.5, 0.16);
         }
 
-        // 魔弾の更新と結界ヒット処理（邪魔な中央バナーは出さず、リング波動とHUDのみで段階変化を表現）
         for (let i = playerBullets.length - 1; i >= 0; i--) {
           const b = playerBullets[i];
           b.x += b.vx * dt;
@@ -1692,7 +1602,6 @@ https://fubuki-zmtq.github.io/TrialoftheGuardian/`;
           }
         }
 
-        // 敵攻撃の更新
         updateBossDirector(dt);
 
         for (let i = bossAttacks.length - 1; i >= 0; i--) {
@@ -1758,9 +1667,6 @@ https://fubuki-zmtq.github.io/TrialoftheGuardian/`;
         }
       }
 
-      // ==========================================
-      // 12. Canvas描画処理
-      // ==========================================
       function drawStageBackground(timeSec) {
         const skyGrad = ctx.createLinearGradient(0, 0, 0, WORLD_H);
         skyGrad.addColorStop(0, '#040814');
@@ -1881,7 +1787,6 @@ https://fubuki-zmtq.github.io/TrialoftheGuardian/`;
         ctx.save();
         ctx.translate(bx, by + hoverY);
 
-        // 光輪
         ctx.save();
         ctx.rotate(timeSec * 0.45);
         ctx.strokeStyle = currentPhase === 3 ? 'rgba(217, 83, 79, 0.5)' : 'rgba(197, 160, 89, 0.5)';
@@ -1898,7 +1803,6 @@ https://fubuki-zmtq.github.io/TrialoftheGuardian/`;
         }
         ctx.restore();
 
-        // マント
         ctx.fillStyle = '#4a1525';
         ctx.strokeStyle = '#c5a059';
         ctx.lineWidth = 2;
@@ -1911,7 +1815,6 @@ https://fubuki-zmtq.github.io/TrialoftheGuardian/`;
         ctx.fill();
         ctx.stroke();
 
-        // もふもふペンギンの体
         ctx.fillStyle = '#1b2845';
         ctx.strokeStyle = '#c5a059';
         ctx.lineWidth = 1.8;
@@ -1920,13 +1823,11 @@ https://fubuki-zmtq.github.io/TrialoftheGuardian/`;
         ctx.fill();
         ctx.stroke();
 
-        // 白いお腹
         ctx.fillStyle = '#f4efe6';
         ctx.beginPath();
         ctx.ellipse(0, 11, 19, 23, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        // 襟巻ファー
         ctx.fillStyle = '#f4efe6';
         ctx.strokeStyle = '#c5a059';
         ctx.lineWidth = 1.2;
@@ -1937,7 +1838,6 @@ https://fubuki-zmtq.github.io/TrialoftheGuardian/`;
           ctx.stroke();
         }
 
-        // 翼
         ctx.fillStyle = '#1b2845';
         ctx.beginPath();
         ctx.ellipse(-28, 6, 7, 17, 0.25, 0, Math.PI * 2);
@@ -1946,7 +1846,6 @@ https://fubuki-zmtq.github.io/TrialoftheGuardian/`;
         ctx.ellipse(28, 4, 7, 17, -0.35, 0, Math.PI * 2);
         ctx.fill();
 
-        // 瞳
         ctx.fillStyle = '#091024';
         ctx.beginPath();
         ctx.arc(-8, -19, 2.8, 0, Math.PI * 2);
@@ -1958,7 +1857,6 @@ https://fubuki-zmtq.github.io/TrialoftheGuardian/`;
         ctx.arc(7, -20, 1, 0, Math.PI * 2);
         ctx.fill();
 
-        // くちばし
         ctx.fillStyle = '#e4c580';
         ctx.strokeStyle = '#7d6029';
         ctx.lineWidth = 1;
@@ -1970,7 +1868,6 @@ https://fubuki-zmtq.github.io/TrialoftheGuardian/`;
         ctx.fill();
         ctx.stroke();
 
-        // 王冠
         ctx.fillStyle = '#e4c580';
         ctx.strokeStyle = '#7d6029';
         ctx.lineWidth = 1.5;
@@ -1986,7 +1883,6 @@ https://fubuki-zmtq.github.io/TrialoftheGuardian/`;
         ctx.fill();
         ctx.stroke();
 
-        // 錫杖
         ctx.strokeStyle = '#e4c580';
         ctx.lineWidth = 3;
         ctx.beginPath();
@@ -2003,7 +1899,6 @@ https://fubuki-zmtq.github.io/TrialoftheGuardian/`;
 
         ctx.restore();
 
-        // 結界描画
         if (barrierHp > 0) {
           const hpRatio = barrierHp / barrierMaxHp;
           let barrierColor = 'rgba(120, 175, 235, ';
@@ -2286,9 +2181,6 @@ https://fubuki-zmtq.github.io/TrialoftheGuardian/`;
         ctx.restore();
       }
 
-      // ==========================================
-      // 13. イベント処理（PC & スマホ快適操作対応）
-      // ==========================================
       window.addEventListener('keydown', (e) => {
         if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(e.code)) {
           e.preventDefault();
@@ -2313,7 +2205,6 @@ https://fubuki-zmtq.github.io/TrialoftheGuardian/`;
         mouseAttackHeld = false;
       });
 
-      // スマホ用1：画面（Canvas）上を直接スライドしても直感的に移動＋自動連射できる機能
       canvas.addEventListener('touchstart', (e) => {
         if (gameState !== 'PLAYING') return;
         e.preventDefault();
@@ -2362,7 +2253,6 @@ https://fubuki-zmtq.github.io/TrialoftheGuardian/`;
       canvas.addEventListener('touchend', endCanvasDrag, { passive: false });
       canvas.addEventListener('touchcancel', () => { canvasDragTouchId = null; }, { passive: false });
 
-      // スマホ用2：左下仮想スティック（タッチ位置を基準に素早く最大速度へ反応）
       const joystickZone = document.getElementById('joystickZone');
       const joystickKnob = document.getElementById('joystickKnob');
       let joyOrigin = { x: 0, y: 0 };
@@ -2381,7 +2271,6 @@ https://fubuki-zmtq.github.io/TrialoftheGuardian/`;
         }
 
         joystickKnob.style.transform = `translate(${dx}px, ${dy}px)`;
-        // 少し傾けただけでも最高速度で機敏に動けるように感度補正
         const normX = dx / maxDist;
         const normY = dy / maxDist;
         const mag = Math.hypot(normX, normY);
@@ -2440,7 +2329,6 @@ https://fubuki-zmtq.github.io/TrialoftheGuardian/`;
 
       joystickZone.addEventListener('touchcancel', resetJoystick, { passive: false });
 
-      // 右下魔法攻撃ボタン
       const attackTouchBtn = document.getElementById('attackTouchBtn');
       attackTouchBtn.addEventListener('touchstart', (e) => {
         e.preventDefault();
@@ -2455,7 +2343,6 @@ https://fubuki-zmtq.github.io/TrialoftheGuardian/`;
         touchAttackHeld = false;
       });
 
-      // モード選択ボタン群
       const modeButtons = document.querySelectorAll('.mode-btn');
       modeButtons.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -2469,7 +2356,6 @@ https://fubuki-zmtq.github.io/TrialoftheGuardian/`;
         });
       });
 
-      // 開始・再挑戦・タイトルへ戻る
       document.getElementById('btnStartGame').addEventListener('click', startCountdownAndTrial);
       document.getElementById('btnRetryResult').addEventListener('click', startCountdownAndTrial);
       document.getElementById('btnQuickRetry').addEventListener('click', startCountdownAndTrial);
@@ -2496,9 +2382,6 @@ https://fubuki-zmtq.github.io/TrialoftheGuardian/`;
         renderBestRecordUI();
       });
 
-      // ==========================================
-      // 14. 初期化＆メインループ
-      // ==========================================
       renderBestRecordUI();
       resizeCanvas();
 
