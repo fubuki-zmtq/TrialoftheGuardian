@@ -1,9 +1,29 @@
 <!DOCTYPE html>
 <html lang="ja">
+<!--
+
+護王の試練
+
+ソースコードへようこそ！全ステージクリアできましたか？
+
+役に立たない豆知識：特別指導を何度もクリアすると良いことがあるかもしれません
+
+-->
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WGS0XRSZ81"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-WGS0XRSZ81');
+</script>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>護王の試練 — ZETA MYTH TREE QUEST</title>
+  <link rel="icon" href="favicon.png" type="image/png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Hina+Mincho&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -122,6 +142,19 @@
       border: 1px solid var(--gold-light) !important;
       color: var(--gold-light) !important;
       box-shadow: inset 0 0 14px rgba(197, 160, 89, 0.35);
+    }
+
+    .endless-pop-btn {
+      opacity: 0;
+      transform: translateY(14px) scale(0.96);
+      pointer-events: none;
+      transition: opacity 0.28s cubic-bezier(0.22, 1, 0.36, 1), transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.85);
+    }
+    .endless-pop-btn.show {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
     }
 
     @keyframes fadeUpIn {
@@ -270,7 +303,7 @@
           </div>
         </div>
 
-        <div class="w-full bg-[#040814] border border-[#c5a059]/70 h-5 sm:h-6 p-0.5 relative">
+        <div id="barrierHudContainer" class="w-full bg-[#040814] border border-[#c5a059]/70 h-5 sm:h-6 p-0.5 relative">
           <div id="barrierBarFill" class="h-full w-full transition-all duration-75 relative" style="background: linear-gradient(90deg, #1f4670 0%, #4b82b8 55%, #c5a059 100%);">
             <div class="barrier-bar-shine absolute inset-0"></div>
           </div>
@@ -338,7 +371,7 @@
                     <div id="bestRankText" class="text-sm sm:text-lg font-bold text-[#e4c580] mt-0.5">—</div>
                   </div>
                   <div class="bg-[#040814]/80 border border-[#c5a059]/25 py-2 px-1">
-                    <div class="text-[10px] text-[#c2bca8]">最速タイム</div>
+                    <div id="bestTimeHeaderLabel" class="text-[10px] text-[#c2bca8]">最速タイム</div>
                     <div id="bestTimeText" class="font-mono-num text-xs sm:text-sm font-bold text-[#f4efe6] mt-1">--:--.--</div>
                   </div>
                   <div class="bg-[#040814]/80 border border-[#c5a059]/25 py-2 px-1">
@@ -364,9 +397,14 @@
                 <button data-mode="INTENSE" class="mode-btn btn-antique py-2 px-2 text-xs sm:text-sm font-bold tracking-wider text-center">
                   猛特訓
                 </button>
-                <button data-mode="SPECIAL" class="mode-btn btn-antique py-2 px-2 text-xs sm:text-sm font-bold tracking-wider text-center">
-                  特別指導
-                </button>
+                <div class="relative w-full">
+                  <button id="btnEndlessMode" data-mode="ENDLESS" class="mode-btn endless-pop-btn btn-antique absolute left-0 right-0 bottom-full mb-1.5 py-2 px-2 text-xs sm:text-sm font-bold tracking-wider text-center z-30">
+                    無限試練
+                  </button>
+                  <button id="btnSpecialMode" data-mode="SPECIAL" class="mode-btn btn-antique w-full py-2 px-2 text-xs sm:text-sm font-bold tracking-wider text-center">
+                    特別指導
+                  </button>
+                </div>
               </div>
 
               <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 sm:gap-4">
@@ -414,7 +452,7 @@
               <div class="md:col-span-5 gold-subpanel p-3.5 sm:p-5 flex flex-col justify-between">
                 <div class="grid grid-cols-3 gap-2 border-b border-[#c5a059]/30 pb-3">
                   <div>
-                    <div class="text-xs text-[#c2bca8]">クリアタイム</div>
+                    <div id="resultTimeLabel" class="text-xs text-[#c2bca8]">クリアタイム</div>
                     <div id="resultTime" class="font-mono-num text-sm sm:text-lg font-bold text-[#f4efe6] mt-0.5">00:42.15</div>
                   </div>
                   <div>
@@ -429,15 +467,15 @@
 
                 <div class="space-y-1.5 pt-2.5 text-xs sm:text-sm text-[#c2bca8]">
                   <div class="flex justify-between">
-                    <span>クリアボーナス</span>
+                    <span id="breakdownBaseLabel">クリアボーナス</span>
                     <span id="breakdownBase" class="font-mono-num text-[#f4efe6]">+5,000</span>
                   </div>
                   <div class="flex justify-between">
-                    <span>タイムボーナス</span>
+                    <span id="breakdownTimeLabel">タイムボーナス</span>
                     <span id="breakdownTime" class="font-mono-num text-[#f4efe6]">+4,200</span>
                   </div>
                   <div class="flex justify-between">
-                    <span>回避ボーナス</span>
+                    <span id="breakdownNoHitLabel">回避ボーナス</span>
                     <span id="breakdownNoHit" class="font-mono-num text-[#e4c580]">+2,500</span>
                   </div>
                 </div>
@@ -490,7 +528,7 @@
         </a>
 
         <div class="hidden sm:block text-[11px] text-[#7e796a] tracking-widest">
-          VER 1.1.1
+          VER 1.2.0
         </div>
       </div>
 
@@ -510,7 +548,7 @@
           </div>
         </div>
 
-        <div class="flex items-center gap-3">
+        <div id="attackTouchWrap" class="flex items-center gap-3">
           <button id="attackTouchBtn" class="w-24 h-24 sm:w-28 sm:h-28 bg-[#2d2210] active:bg-[#463519] border-2 border-[#e4c580] shadow-xl flex flex-col items-center justify-center touch-none select-none">
             <span class="w-4 h-4 border-2 border-[#e4c580] rotate-45 mb-1 bg-[#e4c580]/30"></span>
             <span class="text-xs sm:text-sm font-bold tracking-widest text-[#f4efe6]">魔弾</span>
@@ -599,10 +637,21 @@
         <div class="p-4 sm:p-6 overflow-y-auto space-y-3.5 text-xs sm:text-sm">
           <div class="gold-subpanel p-4">
             <div class="flex items-center justify-between border-b border-[#c5a059]/30 pb-1.5 mb-2">
-              <span class="font-bold text-[#e4c580] tracking-wider">Ver 1.1.1</span>
-              <span class="font-mono-num text-xs text-[#c2bca8]">2026.10.26</span>
+              <span class="font-bold text-[#e4c580] tracking-wider">Ver 1.2.0</span>
+              <span class="font-mono-num text-xs text-[#c2bca8]">2026.10.27</span>
             </div>
             <ul class="space-y-1 text-[#f4efe6] leading-relaxed list-disc list-inside">
+              <li>壱ノ護王のキャラクターイラストとファビコンを実装</li>
+              <li>特定の条件を満たした際の要素を追加</li>
+            </ul>
+          </div>
+
+          <div class="gold-subpanel p-4">
+            <div class="flex items-center justify-between border-b border-[#c5a059]/30 pb-1.5 mb-2">
+              <span class="font-bold text-[#f4efe6] tracking-wider">Ver 1.1.1</span>
+              <span class="font-mono-num text-xs text-[#c2bca8]">2026.10.26</span>
+            </div>
+            <ul class="space-y-1 text-[#c2bca8] leading-relaxed list-disc list-inside">
               <li>ホーム画面のレイアウトとテキスト表示を調整</li>
             </ul>
           </div>
@@ -659,6 +708,9 @@
     (() => {
       'use strict';
 
+      const kingImg = new Image();
+      kingImg.src = 'king.png';
+
       const MODES = {
         WARMUP: {
           key: 'WARMUP',
@@ -699,10 +751,21 @@
           parTime: 185,
           speedScale: 1.32,
           desc: '【特別指導】障壁：1枚 ／ 耐久：2,400 ／ 護王の本気に挑む最高難易度'
+        },
+        ENDLESS: {
+          key: 'ENDLESS',
+          name: '無限試練',
+          playerHp: 1,
+          barrierMaxHp: Infinity,
+          baseBonus: 0,
+          parTime: 0,
+          speedScale: 1.32,
+          desc: '【無限試練】障壁：1枚 ／ 魔法弾なし ／ 限界まで攻撃を凌ぎ続ける特別試練'
         }
       };
 
       const STORAGE_KEY_V11 = 'zmtq_guardian_trial_best_v1_1';
+      const SPECIAL_CLEAR_KEY = 'zmtq_guardian_special_clears_v1_2';
 
       let WORLD_W = 1120;
       let WORLD_H = 630;
@@ -733,8 +796,10 @@
 
       const titleTopBar = document.getElementById('titleTopBar');
       const battleHud = document.getElementById('battleHud');
+      const barrierHudContainer = document.getElementById('barrierHudContainer');
       const footerLinkBar = document.getElementById('footerLinkBar');
       const touchControlsBar = document.getElementById('touchControlsBar');
+      const attackTouchWrap = document.getElementById('attackTouchWrap');
 
       const titleOverlay = document.getElementById('titleOverlay');
       const resultOverlay = document.getElementById('resultOverlay');
@@ -752,11 +817,13 @@
       const barrierPercentText = document.getElementById('barrierPercentText');
 
       const bestModeLabel = document.getElementById('bestModeLabel');
+      const bestTimeHeaderLabel = document.getElementById('bestTimeHeaderLabel');
       const bestRankText = document.getElementById('bestRankText');
       const bestTimeText = document.getElementById('bestTimeText');
       const bestHitsText = document.getElementById('bestHitsText');
       const bestScoreText = document.getElementById('bestScoreText');
       const modeDescText = document.getElementById('modeDescText');
+      const btnEndlessMode = document.getElementById('btnEndlessMode');
 
       const modalControls = document.getElementById('modalControls');
       const modalUpdates = document.getElementById('modalUpdates');
@@ -795,9 +862,11 @@
       let lastCountdownStep = -1;
 
       let lastResultSummary = {
+        modeKey: 'NORMAL',
         modeName: '通常訓練',
         score: 0,
         rank: 'C',
+        timeSec: 0,
         cleared: false
       };
 
@@ -820,7 +889,8 @@
 
       let attackDirector = {
         cooldown: 1.0,
-        patternIndex: 0
+        patternIndex: 0,
+        rhythmStep: 0
       };
 
       const keys = {};
@@ -831,6 +901,28 @@
 
       let canvasDragTouchId = null;
       let canvasDragLastPos = { x: 0, y: 0 };
+
+      function getSpecialClearCount() {
+        try {
+          return parseInt(localStorage.getItem(SPECIAL_CLEAR_KEY) || '0', 10) || 0;
+        } catch (e) {
+          return 0;
+        }
+      }
+
+      function incrementSpecialClearCount() {
+        try {
+          const next = getSpecialClearCount() + 1;
+          localStorage.setItem(SPECIAL_CLEAR_KEY, String(next));
+          return next;
+        } catch (e) {
+          return 1;
+        }
+      }
+
+      function isEndlessUnlocked() {
+        return getSpecialClearCount() >= 5;
+      }
 
       function resizeCanvas() {
         const prevW = WORLD_W;
@@ -869,6 +961,11 @@
           touchControlsBar.classList.remove('hidden');
           touchControlsBar.classList.add('flex');
           footerLinkBar.classList.add('hidden');
+          if (currentModeKey === 'ENDLESS') {
+            attackTouchWrap.classList.add('hidden');
+          } else {
+            attackTouchWrap.classList.remove('hidden');
+          }
         } else {
           touchControlsBar.classList.add('hidden');
           touchControlsBar.classList.remove('flex');
@@ -903,9 +1000,16 @@
             current.bestScore = newRec.score;
             updated = true;
           }
-          if (current.bestTime === null || newRec.time < current.bestTime) {
-            current.bestTime = newRec.time;
-            updated = true;
+          if (modeKey === 'ENDLESS') {
+            if (current.bestTime === null || newRec.time > current.bestTime) {
+              current.bestTime = newRec.time;
+              updated = true;
+            }
+          } else {
+            if (current.bestTime === null || newRec.time < current.bestTime) {
+              current.bestTime = newRec.time;
+              updated = true;
+            }
           }
           if (current.bestHits === null || newRec.hits < current.bestHits) {
             current.bestHits = newRec.hits;
@@ -936,6 +1040,8 @@
       function renderBestRecordUI() {
         const modeObj = MODES[currentModeKey];
         bestModeLabel.textContent = modeObj.name;
+        bestTimeHeaderLabel.textContent = currentModeKey === 'ENDLESS' ? '最長タイム' : '最速タイム';
+
         const all = loadAllBestRecords();
         const rec = all[currentModeKey];
 
@@ -972,6 +1078,19 @@
       }
 
       function updateBarrierHud() {
+        if (currentModeKey === 'ENDLESS') {
+          barrierHudContainer.classList.add('hidden');
+          if (currentPhase === 1) {
+            phaseBadge.textContent = '第1段階';
+          } else if (currentPhase === 2) {
+            phaseBadge.textContent = '第2段階';
+          } else {
+            phaseBadge.textContent = '最終段階';
+          }
+          return;
+        }
+
+        barrierHudContainer.classList.remove('hidden');
         const ratio = Math.max(0, barrierHp / barrierMaxHp);
         const pct = (ratio * 100).toFixed(1);
         barrierBarFill.style.width = `${pct}%`;
@@ -1022,6 +1141,7 @@
 
         attackDirector.cooldown = 0.85;
         attackDirector.patternIndex = 0;
+        attackDirector.rhythmStep = 0;
 
         hudModeBadge.textContent = modeObj.name;
         countdownModeLabel.textContent = modeObj.name;
@@ -1093,7 +1213,7 @@
 
       function spawnPatternC_ComboBarrage() {
         const scale = getSpeedScale();
-        const isHard = (currentModeKey === 'INTENSE' || currentModeKey === 'SPECIAL');
+        const isHard = (currentModeKey === 'INTENSE' || currentModeKey === 'SPECIAL' || currentModeKey === 'ENDLESS');
         const count = (currentPhase === 3 || isHard) ? 4 : 3;
         const stepDelay = Math.max(0.22, 0.32 / scale);
 
@@ -1118,7 +1238,7 @@
 
       function spawnPatternD_HorizontalWave(customY = null) {
         const scale = getSpeedScale();
-        const isHard = (currentModeKey === 'INTENSE' || currentModeKey === 'SPECIAL');
+        const isHard = (currentModeKey === 'INTENSE' || currentModeKey === 'SPECIAL' || currentModeKey === 'ENDLESS');
         const baseWarn = currentPhase === 1 ? 1.28 : currentPhase === 2 ? 1.12 : 0.98;
         const warnTime = Math.max(0.62, baseWarn / Math.pow(scale, 0.6));
 
@@ -1151,8 +1271,8 @@
         });
       }
 
-      function spawnPatternE_CrossThunderGrid() {
-        const angles = [-0.36, -0.18, 0, 0.18, 0.36];
+      function spawnPatternE_CrossThunderGrid(offsetShift = 0) {
+        const angles = [-0.36 + offsetShift, -0.18 + offsetShift, offsetShift, 0.18 + offsetShift, 0.36 + offsetShift];
         for (const ang of angles) {
           spawnPatternA_LightningSpear(ang, 0.78);
         }
@@ -1164,66 +1284,79 @@
         if (attackDirector.cooldown > 0) return;
 
         const scale = getSpeedScale();
-        const isHard = (currentModeKey === 'INTENSE' || currentModeKey === 'SPECIAL');
-        const pat = attackDirector.patternIndex;
-        attackDirector.patternIndex = (attackDirector.patternIndex + 1) % 6;
+        const isHard = (currentModeKey === 'INTENSE' || currentModeKey === 'SPECIAL' || currentModeKey === 'ENDLESS');
+        const isEndless = (currentModeKey === 'ENDLESS');
+
+        let pat = attackDirector.patternIndex;
+        if (isEndless && currentPhase === 3) {
+          const jump = (attackDirector.rhythmStep % 3 === 1) ? 2 : 1;
+          attackDirector.patternIndex = (attackDirector.patternIndex + jump) % 6;
+        } else {
+          attackDirector.patternIndex = (attackDirector.patternIndex + 1) % 6;
+        }
+        attackDirector.rhythmStep++;
+
+        const rhythmFactors = [0.92, 1.06, 0.88, 1.12, 0.95, 1.04];
+        const rhythmMod = isEndless ? rhythmFactors[attackDirector.rhythmStep % rhythmFactors.length] : 1.0;
 
         if (currentPhase === 1 && !isHard) {
           if (pat % 3 === 0) {
             spawnPatternA_LightningSpear(0);
-            attackDirector.cooldown = 1.25 / scale;
+            attackDirector.cooldown = (1.25 / scale) * rhythmMod;
           } else if (pat % 3 === 1) {
             spawnPatternB_LightCircle(player.x, player.y, 78);
-            attackDirector.cooldown = 1.35 / scale;
+            attackDirector.cooldown = (1.35 / scale) * rhythmMod;
           } else {
             spawnPatternA_LightningSpear(-0.17);
             spawnPatternA_LightningSpear(0.17);
-            attackDirector.cooldown = 1.48 / scale;
+            attackDirector.cooldown = (1.48 / scale) * rhythmMod;
           }
         } else if (currentPhase <= 2) {
           if (pat === 0) {
             spawnPatternC_ComboBarrage();
-            attackDirector.cooldown = 1.85 / scale;
+            attackDirector.cooldown = (1.85 / scale) * rhythmMod;
           } else if (pat === 1) {
             spawnPatternD_HorizontalWave();
             spawnPatternB_LightCircle(player.x, player.y, 76);
-            attackDirector.cooldown = 1.6 / scale;
+            attackDirector.cooldown = (1.6 / scale) * rhythmMod;
           } else if (pat === 2) {
-            spawnPatternA_LightningSpear(-0.2);
-            spawnPatternA_LightningSpear(0);
-            spawnPatternA_LightningSpear(0.2);
-            attackDirector.cooldown = 1.38 / scale;
+            const shift = isEndless ? ((attackDirector.rhythmStep % 2 === 0) ? 0.05 : -0.05) : 0;
+            spawnPatternA_LightningSpear(-0.2 + shift);
+            spawnPatternA_LightningSpear(shift);
+            spawnPatternA_LightningSpear(0.2 + shift);
+            attackDirector.cooldown = (1.38 / scale) * rhythmMod;
           } else if (pat === 3) {
             spawnPatternB_LightCircle(player.x - 105, player.y, 74);
             spawnPatternB_LightCircle(player.x + 105, player.y, 74);
             spawnPatternA_LightningSpear(0);
-            attackDirector.cooldown = 1.5 / scale;
+            attackDirector.cooldown = (1.5 / scale) * rhythmMod;
           } else if (pat === 4) {
             if (isHard) {
               spawnPatternE_CrossThunderGrid();
             } else {
               spawnPatternD_HorizontalWave();
             }
-            attackDirector.cooldown = 1.45 / scale;
+            attackDirector.cooldown = (1.45 / scale) * rhythmMod;
           } else {
             spawnPatternC_ComboBarrage();
-            attackDirector.cooldown = 1.8 / scale;
+            attackDirector.cooldown = (1.8 / scale) * rhythmMod;
           }
         } else {
           if (pat === 0) {
             spawnPatternC_ComboBarrage();
             spawnPatternD_HorizontalWave();
-            attackDirector.cooldown = 1.7 / scale;
+            attackDirector.cooldown = (1.7 / scale) * rhythmMod;
           } else if (pat === 1) {
-            spawnPatternE_CrossThunderGrid();
-            attackDirector.cooldown = 1.3 / scale;
+            const shift = isEndless ? ((attackDirector.rhythmStep % 2 === 0) ? 0.06 : -0.06) : 0;
+            spawnPatternE_CrossThunderGrid(shift);
+            attackDirector.cooldown = (1.3 / scale) * rhythmMod;
           } else if (pat === 2) {
             spawnPatternD_HorizontalWave(player.y - 55);
             if (isHard) {
               spawnPatternD_HorizontalWave(player.y + 65);
             }
             spawnPatternA_LightningSpear(0);
-            attackDirector.cooldown = 1.5 / scale;
+            attackDirector.cooldown = (1.5 / scale) * rhythmMod;
           } else if (pat === 3) {
             const circleCount = isHard ? 4 : 3;
             for (let k = 0; k < circleCount; k++) {
@@ -1232,15 +1365,16 @@
               spawnPatternB_LightCircle(rx, ry, 78);
             }
             spawnPatternB_LightCircle(player.x, player.y, 78);
-            attackDirector.cooldown = 1.35 / scale;
+            attackDirector.cooldown = (1.35 / scale) * rhythmMod;
           } else if (pat === 4) {
             spawnPatternC_ComboBarrage();
-            attackDirector.cooldown = 1.6 / scale;
+            attackDirector.cooldown = (1.6 / scale) * rhythmMod;
           } else {
             spawnPatternD_HorizontalWave();
-            spawnPatternA_LightningSpear(-0.14);
-            spawnPatternA_LightningSpear(0.14);
-            attackDirector.cooldown = 1.4 / scale;
+            const spread = isEndless && (attackDirector.rhythmStep % 2 === 0) ? 0.18 : 0.14;
+            spawnPatternA_LightningSpear(-spread);
+            spawnPatternA_LightningSpear(spread);
+            attackDirector.cooldown = (1.4 / scale) * rhythmMod;
           }
         }
       }
@@ -1314,7 +1448,11 @@
           player.hp = Math.max(0, player.hp - 1);
           renderHpPips();
           if (player.hp <= 0) {
-            finishTrial(false);
+            if (currentModeKey === 'ENDLESS') {
+              finishTrial(true);
+            } else {
+              finishTrial(false);
+            }
           }
         }
       }
@@ -1332,8 +1470,39 @@
         spawnShockwaveRing(BOSS_POS.x, BOSS_POS.y, 240, '#f4efe6', 0.6);
       }
 
-      function calculateScoreAndRank(clearSuccess) {
+      function calculateScoreAndRank(clearSuccess, specialClearCountNow = 0) {
         const modeObj = MODES[currentModeKey];
+
+        if (currentModeKey === 'ENDLESS') {
+          const timeScore = Math.floor(elapsedTime * 220);
+          let phaseBonus = 0;
+          if (elapsedTime >= 20) {
+            phaseBonus = 3000;
+          } else if (elapsedTime >= 10) {
+            phaseBonus = 1000;
+          }
+          const totalScore = timeScore + phaseBonus;
+
+          let rank = 'D';
+          if (elapsedTime >= 60) {
+            rank = 'S';
+          } else if (elapsedTime >= 40) {
+            rank = 'A';
+          } else if (elapsedTime >= 25) {
+            rank = 'B';
+          } else if (elapsedTime >= 12) {
+            rank = 'C';
+          }
+
+          return {
+            score: totalScore,
+            baseBonus: timeScore,
+            timeBonus: phaseBonus,
+            avoidBonus: 0,
+            rank,
+            quote: '「お見事です！ここまで凌ぎ続けるとは……！あなたならまだまだ先へ進めそうですね。次の挑戦も楽しみにしていますよ。」'
+          };
+        }
 
         if (!clearSuccess) {
           return {
@@ -1376,6 +1545,10 @@
           quote = '「よく頑張りましたね！ 結界を破る力は十分に備わっています。次は攻撃の予兆をもう一歩早く捉えると、さらに美しく立ち回れますよ。」';
         }
 
+        if (currentModeKey === 'SPECIAL' && specialClearCountNow === 5) {
+          quote = '「……素晴らしい。本当に、素晴らしいです。あなたの実力には感動いたします。……ですが、あなたはまだ、先を望んでいらっしゃるのでしょうか？」';
+        }
+
         return {
           score: totalScore,
           baseBonus,
@@ -1390,23 +1563,47 @@
         gameState = 'RESULT';
         updateFooterControlsVisibility();
         const modeObj = MODES[currentModeKey];
-        const res = calculateScoreAndRank(clearSuccess);
+
+        let specialClearCountNow = getSpecialClearCount();
+        if (clearSuccess && currentModeKey === 'SPECIAL') {
+          specialClearCountNow = incrementSpecialClearCount();
+        }
+
+        const res = calculateScoreAndRank(clearSuccess, specialClearCountNow);
 
         lastResultSummary = {
+          modeKey: currentModeKey,
           modeName: modeObj.name,
           score: res.score,
           rank: res.rank,
+          timeSec: elapsedTime,
           cleared: clearSuccess
         };
 
         const resultMainTitle = document.getElementById('resultMainTitle');
         const resultModeBadge = document.getElementById('resultModeBadge');
         const newRecordBadge = document.getElementById('newRecordBadge');
+        const resultTimeLabel = document.getElementById('resultTimeLabel');
+        const breakdownBaseLabel = document.getElementById('breakdownBaseLabel');
+        const breakdownTimeLabel = document.getElementById('breakdownTimeLabel');
+        const breakdownNoHitLabel = document.getElementById('breakdownNoHitLabel');
 
         resultModeBadge.textContent = modeObj.name;
 
+        if (currentModeKey === 'ENDLESS') {
+          resultTimeLabel.textContent = '耐えたタイム';
+          breakdownBaseLabel.textContent = '耐久時間スコア';
+          breakdownTimeLabel.textContent = '段階到達ボーナス';
+          breakdownNoHitLabel.textContent = '回避ボーナス';
+        } else {
+          resultTimeLabel.textContent = 'クリアタイム';
+          breakdownBaseLabel.textContent = 'クリアボーナス';
+          breakdownTimeLabel.textContent = 'タイムボーナス';
+          breakdownNoHitLabel.textContent = '回避ボーナス';
+        }
+
         if (clearSuccess) {
-          resultMainTitle.textContent = '試練突破！';
+          resultMainTitle.textContent = currentModeKey === 'ENDLESS' ? '試練終了' : '試練突破！';
           resultMainTitle.className = 'text-2xl sm:text-3xl font-bold tracking-widest text-[#f4efe6]';
           const isNewBest = saveBestRecordForMode(currentModeKey, {
             score: res.score,
@@ -1441,8 +1638,14 @@
       }
 
       document.getElementById('btnShareX').addEventListener('click', () => {
+        let firstLine = `壱ノ護王との${lastResultSummary.modeName}をクリアした！`;
+        if (lastResultSummary.modeKey === 'ENDLESS') {
+          const secStr = lastResultSummary.timeSec.toFixed(2);
+          firstLine = `壱ノ護王との無限試練で${secStr}秒耐えた！`;
+        }
+
         const postText =
-`壱ノ護王との${lastResultSummary.modeName}をクリアした！
+`${firstLine}
 スコア：${lastResultSummary.score}(${lastResultSummary.rank})
 
 #護王の試練
@@ -1518,6 +1721,18 @@ https://fubuki-zmtq.github.io/TrialoftheGuardian/`;
         elapsedTime += dt;
         hudTime.textContent = formatTime(elapsedTime);
 
+        if (currentModeKey === 'ENDLESS') {
+          if (currentPhase === 1 && elapsedTime >= 10) {
+            currentPhase = 2;
+            spawnShockwaveRing(BOSS_POS.x, BOSS_POS.y, 240, '#a77de8', 0.6);
+            updateBarrierHud();
+          } else if (currentPhase === 2 && elapsedTime >= 20) {
+            currentPhase = 3;
+            spawnShockwaveRing(BOSS_POS.x, BOSS_POS.y, 280, '#d9534f', 0.65);
+            updateBarrierHud();
+          }
+        }
+
         let moveX = 0;
         let moveY = 0;
         if (keys['KeyW'] || keys['ArrowUp']) moveY -= 1;
@@ -1548,61 +1763,63 @@ https://fubuki-zmtq.github.io/TrialoftheGuardian/`;
           player.invulnTimer = Math.max(0, player.invulnTimer - dt);
         }
 
-        player.shootCooldown = Math.max(0, player.shootCooldown - dt);
-        const wantsAttack = keys['Space'] || mouseAttackHeld || touchAttackHeld || (canvasDragTouchId !== null);
-        if (wantsAttack && player.shootCooldown <= 0) {
-          player.shootCooldown = 0.125;
+        if (currentModeKey !== 'ENDLESS') {
+          player.shootCooldown = Math.max(0, player.shootCooldown - dt);
+          const wantsAttack = keys['Space'] || mouseAttackHeld || touchAttackHeld || (canvasDragTouchId !== null);
+          if (wantsAttack && player.shootCooldown <= 0) {
+            player.shootCooldown = 0.125;
 
-          const dx = BOSS_POS.x - player.x;
-          const dy = BOSS_POS.y - player.y;
-          const baseAng = Math.atan2(dy, dx);
-          const spread = (Math.random() - 0.5) * 0.05;
-          const speed = 780;
+            const dx = BOSS_POS.x - player.x;
+            const dy = BOSS_POS.y - player.y;
+            const baseAng = Math.atan2(dy, dx);
+            const spread = (Math.random() - 0.5) * 0.05;
+            const speed = 780;
 
-          playerBullets.push({
-            x: player.x,
-            y: player.y - 10,
-            vx: Math.cos(baseAng + spread) * speed,
-            vy: Math.sin(baseAng + spread) * speed,
-            radius: 6,
-            damage: 16
-          });
-          spawnParticles(player.x, player.y - 12, 3, '#e4c580', 25, 80, 2.5, 0.16);
-        }
-
-        for (let i = playerBullets.length - 1; i >= 0; i--) {
-          const b = playerBullets[i];
-          b.x += b.vx * dt;
-          b.y += b.vy * dt;
-
-          const distToBarrier = Math.hypot(b.x - BOSS_POS.x, b.y - BOSS_POS.y);
-          if (distToBarrier <= BARRIER_RADIUS + b.radius) {
-            barrierHp = Math.max(0, barrierHp - b.damage);
-            barrierFlash = 1.0;
-            spawnParticles(b.x, b.y, 7, '#e4c580', 45, 165, 3, 0.28);
-            spawnShockwaveRing(b.x, b.y, 26, '#f4efe6', 0.2);
-            playerBullets.splice(i, 1);
-
-            const ratio = barrierHp / barrierMaxHp;
-            if (currentPhase === 1 && ratio <= 0.69) {
-              currentPhase = 2;
-              spawnShockwaveRing(BOSS_POS.x, BOSS_POS.y, 240, '#a77de8', 0.6);
-            } else if (currentPhase === 2 && ratio <= 0.34) {
-              currentPhase = 3;
-              spawnShockwaveRing(BOSS_POS.x, BOSS_POS.y, 280, '#d9534f', 0.65);
-            }
-
-            updateBarrierHud();
-
-            if (barrierHp <= 0) {
-              triggerBarrierBreakClear();
-              return;
-            }
-            continue;
+            playerBullets.push({
+              x: player.x,
+              y: player.y - 10,
+              vx: Math.cos(baseAng + spread) * speed,
+              vy: Math.sin(baseAng + spread) * speed,
+              radius: 6,
+              damage: 16
+            });
+            spawnParticles(player.x, player.y - 12, 3, '#e4c580', 25, 80, 2.5, 0.16);
           }
 
-          if (b.x < -50 || b.x > WORLD_W + 50 || b.y < -50 || b.y > WORLD_H + 50) {
-            playerBullets.splice(i, 1);
+          for (let i = playerBullets.length - 1; i >= 0; i--) {
+            const b = playerBullets[i];
+            b.x += b.vx * dt;
+            b.y += b.vy * dt;
+
+            const distToBarrier = Math.hypot(b.x - BOSS_POS.x, b.y - BOSS_POS.y);
+            if (distToBarrier <= BARRIER_RADIUS + b.radius) {
+              barrierHp = Math.max(0, barrierHp - b.damage);
+              barrierFlash = 1.0;
+              spawnParticles(b.x, b.y, 7, '#e4c580', 45, 165, 3, 0.28);
+              spawnShockwaveRing(b.x, b.y, 26, '#f4efe6', 0.2);
+              playerBullets.splice(i, 1);
+
+              const ratio = barrierHp / barrierMaxHp;
+              if (currentPhase === 1 && ratio <= 0.69) {
+                currentPhase = 2;
+                spawnShockwaveRing(BOSS_POS.x, BOSS_POS.y, 240, '#a77de8', 0.6);
+              } else if (currentPhase === 2 && ratio <= 0.34) {
+                currentPhase = 3;
+                spawnShockwaveRing(BOSS_POS.x, BOSS_POS.y, 280, '#d9534f', 0.65);
+              }
+
+              updateBarrierHud();
+
+              if (barrierHp <= 0) {
+                triggerBarrierBreakClear();
+                return;
+              }
+              continue;
+            }
+
+            if (b.x < -50 || b.x > WORLD_W + 50 || b.y < -50 || b.y > WORLD_H + 50) {
+              playerBullets.splice(i, 1);
+            }
           }
         }
 
@@ -1807,103 +2024,14 @@ https://fubuki-zmtq.github.io/TrialoftheGuardian/`;
         }
         ctx.restore();
 
-        ctx.fillStyle = '#4a1525';
-        ctx.strokeStyle = '#c5a059';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(-26, -12);
-        ctx.quadraticCurveTo(-48, 18, -38, 42);
-        ctx.lineTo(38, 42);
-        ctx.quadraticCurveTo(48, 18, 26, -12);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
-
-        ctx.fillStyle = '#1b2845';
-        ctx.strokeStyle = '#c5a059';
-        ctx.lineWidth = 1.8;
-        ctx.beginPath();
-        ctx.ellipse(0, 6, 27, 31, 0, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.stroke();
-
-        ctx.fillStyle = '#f4efe6';
-        ctx.beginPath();
-        ctx.ellipse(0, 11, 19, 23, 0, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.fillStyle = '#f4efe6';
-        ctx.strokeStyle = '#c5a059';
-        ctx.lineWidth = 1.2;
-        for (let i = -3; i <= 3; i++) {
-          ctx.beginPath();
-          ctx.arc(i * 7, -11 + Math.abs(i) * 0.8, 6.5, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.stroke();
+        const imgSize = 140;
+        if (kingImg.complete && kingImg.naturalWidth > 0) {
+          ctx.drawImage(kingImg, -imgSize / 2, -imgSize / 2, imgSize, imgSize);
         }
 
-        ctx.fillStyle = '#1b2845';
-        ctx.beginPath();
-        ctx.ellipse(-28, 6, 7, 17, 0.25, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.beginPath();
-        ctx.ellipse(28, 4, 7, 17, -0.35, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.fillStyle = '#091024';
-        ctx.beginPath();
-        ctx.arc(-8, -19, 2.8, 0, Math.PI * 2);
-        ctx.arc(8, -19, 2.8, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = '#f4efe6';
-        ctx.beginPath();
-        ctx.arc(-9, -20, 1, 0, Math.PI * 2);
-        ctx.arc(7, -20, 1, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.fillStyle = '#e4c580';
-        ctx.strokeStyle = '#7d6029';
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(-5, -15);
-        ctx.lineTo(5, -15);
-        ctx.lineTo(0, -9);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
-
-        ctx.fillStyle = '#e4c580';
-        ctx.strokeStyle = '#7d6029';
-        ctx.lineWidth = 1.5;
-        ctx.beginPath();
-        ctx.moveTo(-14, -30);
-        ctx.lineTo(-16, -43);
-        ctx.lineTo(-7, -36);
-        ctx.lineTo(0, -46);
-        ctx.lineTo(7, -36);
-        ctx.lineTo(16, -43);
-        ctx.lineTo(14, -30);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
-
-        ctx.strokeStyle = '#e4c580';
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.moveTo(34, -28);
-        ctx.lineTo(30, 36);
-        ctx.stroke();
-
-        ctx.fillStyle = '#e4c580';
-        ctx.save();
-        ctx.translate(34, -32);
-        ctx.rotate(Math.PI / 4);
-        ctx.fillRect(-6, -6, 12, 12);
         ctx.restore();
 
-        ctx.restore();
-
-        if (barrierHp > 0) {
+        if (currentModeKey !== 'ENDLESS' && barrierHp > 0) {
           const hpRatio = barrierHp / barrierMaxHp;
           let barrierColor = 'rgba(120, 175, 235, ';
           let strokeHex = '#78afeb';
@@ -2356,6 +2484,15 @@ https://fubuki-zmtq.github.io/TrialoftheGuardian/`;
           modeButtons.forEach(b => b.classList.remove('mode-active'));
           btn.classList.add('mode-active');
           modeDescText.textContent = MODES[selected].desc;
+
+          if (selected === 'SPECIAL' || selected === 'ENDLESS') {
+            if (isEndlessUnlocked()) {
+              btnEndlessMode.classList.add('show');
+            }
+          } else {
+            btnEndlessMode.classList.remove('show');
+          }
+
           renderBestRecordUI();
         });
       });
@@ -2372,6 +2509,13 @@ https://fubuki-zmtq.github.io/TrialoftheGuardian/`;
         battleHud.classList.remove('flex');
         titleTopBar.classList.remove('hidden');
         titleOverlay.classList.remove('hidden');
+
+        if ((currentModeKey === 'SPECIAL' || currentModeKey === 'ENDLESS') && isEndlessUnlocked()) {
+          btnEndlessMode.classList.add('show');
+        } else {
+          btnEndlessMode.classList.remove('show');
+        }
+
         renderBestRecordUI();
         updateFooterControlsVisibility();
       }
