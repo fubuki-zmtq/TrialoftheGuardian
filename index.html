@@ -144,17 +144,24 @@
       box-shadow: inset 0 0 14px rgba(197, 160, 89, 0.35);
     }
 
+    @keyframes endlessPulse {
+      0%, 100% { box-shadow: 0 6px 20px rgba(0, 0, 0, 0.95), 0 0 10px rgba(228, 197, 128, 0.45); }
+      50% { box-shadow: 0 6px 24px rgba(0, 0, 0, 0.95), 0 0 20px rgba(217, 83, 79, 0.85); }
+    }
     .endless-pop-btn {
       opacity: 0;
-      transform: translateY(14px) scale(0.96);
+      transform: translateY(16px) scale(0.92);
       pointer-events: none;
-      transition: opacity 0.28s cubic-bezier(0.22, 1, 0.36, 1), transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.85);
+      transition: opacity 0.32s cubic-bezier(0.22, 1, 0.36, 1), transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+      background: linear-gradient(180deg, #4a1525 0%, #1f0810 100%) !important;
+      border: 1.5px solid #e4c580 !important;
+      color: #f4efe6 !important;
     }
     .endless-pop-btn.show {
       opacity: 1;
       transform: translateY(0) scale(1);
       pointer-events: auto;
+      animation: endlessPulse 2.2s infinite ease-in-out;
     }
 
     @keyframes fadeUpIn {
@@ -398,8 +405,8 @@
                   猛特訓
                 </button>
                 <div class="relative w-full">
-                  <button id="btnEndlessMode" data-mode="ENDLESS" class="mode-btn endless-pop-btn btn-antique absolute left-0 right-0 bottom-full mb-1.5 py-2 px-2 text-xs sm:text-sm font-bold tracking-wider text-center z-30">
-                    無限試練
+                  <button id="btnEndlessMode" data-mode="ENDLESS" class="mode-btn endless-pop-btn btn-antique absolute left-0 right-0 bottom-[215%] sm:bottom-full mb-1.5 py-2 px-2 text-xs sm:text-sm font-bold tracking-wider text-center z-30">
+                    ◆ 無限試練 ◆
                   </button>
                   <button id="btnSpecialMode" data-mode="SPECIAL" class="mode-btn btn-antique w-full py-2 px-2 text-xs sm:text-sm font-bold tracking-wider text-center">
                     特別指導
@@ -528,7 +535,7 @@
         </a>
 
         <div class="hidden sm:block text-[11px] text-[#7e796a] tracking-widest">
-          VER 1.2.0
+          VER 1.2.1
         </div>
       </div>
 
@@ -637,10 +644,21 @@
         <div class="p-4 sm:p-6 overflow-y-auto space-y-3.5 text-xs sm:text-sm">
           <div class="gold-subpanel p-4">
             <div class="flex items-center justify-between border-b border-[#c5a059]/30 pb-1.5 mb-2">
-              <span class="font-bold text-[#e4c580] tracking-wider">Ver 1.2.0</span>
+              <span class="font-bold text-[#e4c580] tracking-wider">Ver 1.2.1</span>
               <span class="font-mono-num text-xs text-[#c2bca8]">2026.10.27</span>
             </div>
             <ul class="space-y-1 text-[#f4efe6] leading-relaxed list-disc list-inside">
+              <li>高難易度ステージをスマホでプレイした際の揺れを改善</li>
+              <li>一部UIを改善</li>
+            </ul>
+          </div>
+
+          <div class="gold-subpanel p-4">
+            <div class="flex items-center justify-between border-b border-[#c5a059]/30 pb-1.5 mb-2">
+              <span class="font-bold text-[#f4efe6] tracking-wider">Ver 1.2.0</span>
+              <span class="font-mono-num text-xs text-[#c2bca8]">2026.10.27</span>
+            </div>
+            <ul class="space-y-1 text-[#c2bca8] leading-relaxed list-disc list-inside">
               <li>壱ノ護王のキャラクターイラストとファビコンを実装</li>
               <li>特定の条件を満たした際の要素を追加</li>
             </ul>
@@ -2302,9 +2320,11 @@ https://fubuki-zmtq.github.io/TrialoftheGuardian/`;
 
       function renderGame(timeSec) {
         ctx.save();
-        if (screenShake > 0) {
-          const sx = (Math.random() - 0.5) * screenShake;
-          const sy = (Math.random() - 0.5) * screenShake;
+        const isMobileView = window.innerWidth < 768 || isTouchDevice;
+        const effectiveShake = isMobileView ? (screenShake > 8 ? screenShake * 0.35 : 0) : screenShake;
+        if (effectiveShake > 0) {
+          const sx = (Math.random() - 0.5) * effectiveShake;
+          const sy = (Math.random() - 0.5) * effectiveShake;
           ctx.translate(sx, sy);
         }
 
@@ -2514,10 +2534,13 @@ https://fubuki-zmtq.github.io/TrialoftheGuardian/`;
         titleTopBar.classList.remove('hidden');
         titleOverlay.classList.remove('hidden');
 
+        btnEndlessMode.classList.remove('show');
         if ((currentModeKey === 'SPECIAL' || currentModeKey === 'ENDLESS') && isEndlessUnlocked()) {
-          btnEndlessMode.classList.add('show');
-        } else {
-          btnEndlessMode.classList.remove('show');
+          setTimeout(() => {
+            if (gameState === 'TITLE' && (currentModeKey === 'SPECIAL' || currentModeKey === 'ENDLESS')) {
+              btnEndlessMode.classList.add('show');
+            }
+          }, 350);
         }
 
         renderBestRecordUI();
