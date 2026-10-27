@@ -1474,12 +1474,16 @@
         const modeObj = MODES[currentModeKey];
 
         if (currentModeKey === 'ENDLESS') {
-          const timeScore = Math.floor(elapsedTime * 220);
+          const timeScore = Math.floor(elapsedTime * 1200);
           let phaseBonus = 0;
-          if (elapsedTime >= 20) {
-            phaseBonus = 3000;
+          if (elapsedTime >= 60) {
+            phaseBonus = 30000;
+          } else if (elapsedTime >= 40) {
+            phaseBonus = 20000;
+          } else if (elapsedTime >= 20) {
+            phaseBonus = 10000;
           } else if (elapsedTime >= 10) {
-            phaseBonus = 1000;
+            phaseBonus = 3000;
           }
           const totalScore = timeScore + phaseBonus;
 
