@@ -22,7 +22,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>護王の試練 — ZETA MYTH TREE QUEST</title>
+  <title>護王の試練</title>
   <link rel="icon" href="favicon.png" type="image/png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -291,8 +291,7 @@
 
             <div class="flex items-baseline gap-1.5 border-l border-[#c5a059]/30 pl-2.5 sm:pl-3">
               <span class="text-[10px] text-[#c2bca8] tracking-widest">TIME</span>
-              <span id="hudTime" class="font-mono-num text-sm sm:text-base font-bold text-[#f4efe6]">00:00.00</span>
-            </div>
+              <span id="hudTime" class="font-mono-num text-sm sm:text-base font-bold text-[#f4efe6] inline-block w-[4.8rem] text-right">00:00.00</span>            </div>
 
             <div class="flex items-baseline gap-1.5 border-l border-[#c5a059]/30 pl-2.5 sm:pl-3">
               <span class="text-[10px] text-[#c2bca8] tracking-widest">被弾</span>
@@ -535,7 +534,7 @@
         </a>
 
         <div class="hidden sm:block text-[11px] text-[#7e796a] tracking-widest">
-          VER 1.2.1
+          VER 1.2.2
         </div>
       </div>
 
@@ -644,10 +643,21 @@
         <div class="p-4 sm:p-6 overflow-y-auto space-y-3.5 text-xs sm:text-sm">
           <div class="gold-subpanel p-4">
             <div class="flex items-center justify-between border-b border-[#c5a059]/30 pb-1.5 mb-2">
-              <span class="font-bold text-[#e4c580] tracking-wider">Ver 1.2.1</span>
-              <span class="font-mono-num text-xs text-[#c2bca8]">2026.10.27</span>
+              <span class="font-bold text-[#e4c580] tracking-wider">Ver 1.2.2</span>
+              <span class="font-mono-num text-xs text-[#c2bca8]">2026.10.28</span>
             </div>
             <ul class="space-y-1 text-[#f4efe6] leading-relaxed list-disc list-inside">
+              <li>高難易度ステージをスマホでプレイした際の揺れを(本当に)改善</li>
+              <li>一部文言の調整</li>
+            </ul>
+          </div>
+
+          <div class="gold-subpanel p-4">
+            <div class="flex items-center justify-between border-b border-[#c5a059]/30 pb-1.5 mb-2">
+              <span class="font-bold text-[#f4efe6] tracking-wider">Ver 1.2.1</span>
+              <span class="font-mono-num text-xs text-[#c2bca8]">2026.10.27</span>
+            </div>
+            <ul class="space-y-1 text-[#c2bca8] leading-relaxed list-disc list-inside">
               <li>高難易度ステージをスマホでプレイした際の揺れを改善</li>
               <li>一部UIを改善</li>
             </ul>
@@ -748,7 +758,7 @@
           baseBonus: 5000,
           parTime: 95,
           speedScale: 1.0,
-          desc: '【通常訓練】障壁：5枚 ／ 耐久：1,200 ／ 標準的な試練'
+          desc: '【通常訓練】障壁：5枚 ／ 耐久：1,200 ／ 準備の後に行う標準的な試練'
         },
         INTENSE: {
           key: 'INTENSE',
@@ -768,7 +778,7 @@
           baseBonus: 12000,
           parTime: 185,
           speedScale: 1.32,
-          desc: '【特別指導】障壁：1枚 ／ 耐久：2,400 ／ 護王の本気に挑む最高難易度'
+          desc: '【特別指導】障壁：1枚 ／ 耐久：2,400 ／ 一発の被弾も許されない究極の試練'
         },
         ENDLESS: {
           key: 'ENDLESS',
@@ -778,7 +788,7 @@
           baseBonus: 0,
           parTime: 0,
           speedScale: 1.32,
-          desc: '【無限試練】障壁：1枚 ／ 魔法弾なし ／ 限界まで攻撃を凌ぎ続ける特別試練'
+          desc: '【無限試練】障壁：1枚 ／ 魔法弾なし ／ 限界まで攻撃を避け続ける特別試練'
         }
       };
 
